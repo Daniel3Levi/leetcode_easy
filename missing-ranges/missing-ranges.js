@@ -7,6 +7,8 @@
  * @return {string[]}
  */
 
+// out of memory
+
 var findMissingRanges_1 = function (nums, lower, upper) {
   let range = [];
 
@@ -50,37 +52,11 @@ var findMissingRanges_1 = function (nums, lower, upper) {
 
   return range;
 };
+
 /********************************************************************************* */
+// work
 
 var findMissingRanges_2 = function (nums, lower, upper) {
-  let result_arr_range = [];
-
-  const numberOpetions = (num) => {
-    let np1 = num + 1;
-    let nm1 = num - 1;
-
-    return [nm1, np1];
-  };
-
-  const getRange = (low, up) => {
-    return `${low}->${up}`;
-  };
-
-  console.log(numberOpetions(nums[0]));
-
-  for (let i = 0; i < nums.length; i++) {
-    if (i + 1 == nums.length) {
-      result_arr_range.push(getRange(nums[i], upper));
-    }
-  }
-  return result_arr_range;
-};
-
-// console.log(findMissingRanges_2([-1], -2, -1));
-
-/********************************************************************************* */
-
-var findMissingRanges = function (nums, lower, upper) {
   let nums_copy = [...nums];
   let result_range = [];
   let update = [];
@@ -152,4 +128,172 @@ var findMissingRanges = function (nums, lower, upper) {
   return result_range;
 };
 
-console.log(findMissingRanges([8], 0, 9));
+/********************************************************************************* */
+/// work
+
+var findMissingRanges_3 = function (nums, lower, upper) {
+  let missingRanges = [];
+
+  /********************************** */
+  const getRange = (num, low, up) => {
+    let num_plus_1 = num + 1; // 0
+
+    let num_minus_1 = num - 1; // -2
+
+    if (num === undefined && low !== up) {
+      missingRanges.push(`${low}->${up}`);
+    } else if (low === up && nums.length <= 1) {
+      if (up != num) {
+        missingRanges.push(`${low}`);
+      }
+    }
+
+    if (num_minus_1 > low) {
+      missingRanges.push(`${low}->${num_minus_1}`);
+    } else if (num_minus_1 === low) {
+      missingRanges.push(`${low}`);
+    }
+
+    if (num_plus_1 < up) {
+      missingRanges.push(`${num_plus_1}->${up}`);
+    } else if (num_plus_1 === up) {
+      missingRanges.push(`${up}`);
+    }
+  };
+
+  /********************************** */
+  if (nums.length == 0) {
+    getRange(undefined, lower, upper);
+  }
+
+  for (let i = 0; i < nums.length; i++) {
+    let current = nums[i]; //0
+    let next = nums[i + 1]; //1
+
+    if (i == 0) {
+      if (next == undefined) {
+        getRange(current, lower, upper);
+      } else {
+        getRange(current, lower, next - 1);
+      }
+    }
+    if (i == nums.length - 1 && nums.length !== 1) {
+      getRange(current, current, upper);
+    }
+    if (i > 0) {
+      getRange(current, current, next - 1);
+    }
+  }
+
+  return missingRanges;
+};
+
+/********************************************************************************* */
+/// work
+
+var findMissingRanges_v1_s1 = function (nums, lower, upper) {
+  let missingRanges = [];
+  let nums_length = nums.length;
+  let current_num;
+
+  const add_range_string = (low, up) => {
+    if (low == up) {
+      missingRanges.push(low.toString());
+    } else {
+      missingRanges.push(low.toString() + '->' + up.toString());
+    }
+  };
+
+  if (lower == upper) {
+    if (nums_length == 0) {
+      add_range_string(lower, upper);
+    } else {
+      //do nothing
+    }
+  } else {
+  }
+
+  if (nums_length == 0) {
+    add_range_string(lower, upper);
+  } else if (nums_length == 1) {
+    current_num = nums[0];
+
+    if (lower == upper) {
+      //do nothing
+    } else {
+      if (current_num == lower) {
+        if (current_num + 1 == upper) {
+        }
+      } else {
+      }
+    }
+  } else {
+  }
+
+  return missingRanges;
+};
+
+/********************************************************************************* */
+
+function findMissingRanges_v2_s1(nums, lower, upper) {
+  // All possibole ranges
+  let ranges = [];
+
+  const add_sides = (num) => {
+    if (!ranges.includes(num - 1)) {
+      ranges.push(num - 1);
+    }
+    if (!ranges.includes(num + 1)) {
+      ranges.push(num + 1);
+    }
+  };
+
+  for (let i = 0; i < nums.length; i++) {
+    add_sides(nums[i]);
+  }
+
+  let result_ranges = [];
+  console.log(ranges);
+
+  if (nums.length == 0) {
+    if (lower == upper) {
+      result_ranges.push(`${upper}`);
+    } else {
+      // if(lower==upper){
+      result_ranges.push(`${lower}->${upper}`);
+    }
+  } else {
+    // if(nums.length == 0)
+    //do nothing
+  }
+
+  if (!ranges.includes(lower)) {
+    result_ranges.push(`${lower}->${ranges[0]}`);
+  } else {
+    if (!nums.includes(lower)) {
+      result_ranges.push(`${lower}`);
+    }
+  }
+
+  for (let j = 1; j < ranges.length; j += 2) {
+    let current = ranges[j];
+    let next = ranges[j + 1];
+    if (next !== undefined) {
+      result_ranges.push(`${current}->${next}`);
+    }
+  }
+
+  if (!ranges.includes(upper)) {
+    result_ranges.push(`${ranges[ranges.length - 1]}->${upper}`);
+  } else {
+    if (!nums.includes(upper)) {
+      result_ranges.push(`${upper}`);
+    }
+  }
+
+  return result_ranges;
+}
+
+console.log(findMissingRanges_v2_s1([0, 1, 3, 50, 75], 0, 99));
+
+/********************************************************************************* */
