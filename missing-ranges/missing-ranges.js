@@ -294,6 +294,42 @@ function findMissingRanges_v2_s1(nums, lower, upper) {
   return result_ranges;
 }
 
-console.log(findMissingRanges_v2_s1([0, 1, 3, 50, 75], 0, 99));
-
 /********************************************************************************* */
+
+const missingRanges_v1_s1 = (num, low, high) => {
+  let missingRanges = [];
+
+  if (low == high) {
+    if (num == undefined) {
+      missingRanges.push(`${low}`);
+    } else {
+      // if (num == undefined)
+      // Do nothing
+    }
+  } else {
+    //if (low == high)
+    if (num == undefined) {
+      missingRanges.push(`${low}->${high}`);
+    } else {
+      // if (num == undefined)
+      let plus_1 = num + 1;
+      let minus_1 = num - 1;
+
+      if (low == minus_1) {
+        missingRanges.push(`${low}`);
+      } else if (minus_1 > low) {
+        // if (low == minus_1)
+        missingRanges.push(`${low}->${minus_1}`);
+      }
+
+      if (high == plus_1) {
+        missingRanges.push(`${high}`);
+      } else if (plus_1 < high) {
+        missingRanges.push(`${plus_1}->${high}`);
+      }
+    }
+  }
+  return missingRanges;
+};
+
+console.log(missingRanges(1, 0, 1));
