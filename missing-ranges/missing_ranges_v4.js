@@ -6,35 +6,35 @@
  */
 var findMissingRanges = function (nums, lower, upper) {
   let arr_missing_parts = [];
+  let nums_length = nums.length;
 
-  const add_missing_parts = (low, high) => {
-    if (low == high) {
-      arr_missing_parts.push(`${low}`);
+  if (nums_length == 0) {
+    if (lower == upper) {
+      arr_missing_parts.push(`${lower}`);
     } else {
-      arr_missing_parts.push(`${low}->${high}`);
+      arr_missing_parts.push(`${lower}->${upper}`);
     }
-  };
-
-  if (nums.length == 0) {
-    add_missing_parts(lower, upper);
     return arr_missing_parts;
   }
 
   if (lower != nums[0]) {
-    add_missing_parts(lower, nums[0] - 1);
+    nums.unshift(lower - 1);
+  }
+  if (upper != nums[nums_length - 1]) {
+    nums.push(upper + 1);
   }
 
-  for (let i = 0; i < nums.length - 1; i++) {
-    if (nums[i] + 1 != nums[i + 1]) {
-      add_missing_parts(nums[i] + 1, nums[i + 1] - 1);
+  nums_length = nums.length;
+
+  for (let i = 0; i < nums_length - 1; i++) {
+    if (nums[i] + 2 < nums[i + 1]) {
+      arr_missing_parts.push(`${nums[i] + 1}->${nums[i + 1] - 1}`);
+    } else if (nums[i] + 1 != nums[i + 1]) {
+      arr_missing_parts.push(`${nums[i] + 1}`);
     }
-  }
-
-  if (upper != nums[nums.length - 1]) {
-    add_missing_parts(nums[nums.length - 1] + 1, upper);
   }
 
   return arr_missing_parts;
 };
 
-console.log(findMissingRanges([1, 2, 4], 1, 10));
+console.log(findMissingRanges([3, 5, 7], 1, 9));
