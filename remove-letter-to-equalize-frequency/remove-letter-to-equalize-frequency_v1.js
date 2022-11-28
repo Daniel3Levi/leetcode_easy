@@ -8,7 +8,7 @@ var equalFrequency = function (word) {
   const getCharCout = (char) => {
     let char_countr = 0;
     if (char === undefined) {
-      return char_countr;
+      return undefined;
     } else {
       word = word.replaceAll(char, '');
       char_countr = word_length - word.length;
@@ -24,7 +24,7 @@ var equalFrequency = function (word) {
   });
 
   count = count.sort().reverse().join('');
-  count = count.replaceAll('0', '');
+  let count_length = count.length;
 
   console.log(count);
 };
