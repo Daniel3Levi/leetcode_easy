@@ -8,26 +8,26 @@
 var validWordAbbreviation = function (word, abbr) {
   let abbr_arr = abbr.match(/[a-z]+|[0-9]+/g);
   console.log(abbr_arr);
-  let j = 0;
-  for (let i = 0; i < word.length; i++) {
-    let current_abbr;
-    if (!isNaN(abbr_arr[j])) {
-      i += Number(abbr_arr[j]);
-      j++;
-      current_abbr = abbr_arr[j];
-      if (!current_abbr[0] === word[i]) {
+  for (let i = 0; i < abbr_arr.length; i++) {
+    let current_abbr = abbr_arr[i];
+    console.log(current_abbr);
+    let abbr_index = word.indexOf(current_abbr);
+    if (abbr_index == 0) {
+      word = word.slice(abbr_index + current_abbr.length, word.length);
+    } else {
+      console.log('is number?' + abbr_arr[i]);
+      if (Number(current_abbr) <= word.length && current_abbr[0] !== '0') {
+        word = word.slice(Number(abbr_arr[i]), word.length);
+      } else {
         return false;
       }
-    } else {
-      current_abbr_length = current_abbr.length;
-      j++;
     }
+    console.log(word);
   }
-
-  return true;
+  return word.length == 0;
 };
 
-console.log(validWordAbbreviation('applepie', '3le2e'));
-//validWordAbbreviation('internationalization', 'i12iz4n');
+//console.log(validWordAbbreviation('applepie', '3le2e'));
+//console.log(validWordAbbreviation('internationalization', 'i12iz4n'));
 
-//validWordAbbreviation('substitution', 'sub4u4');
+console.log(validWordAbbreviation('ssubstitution', '11sub3u4'));
